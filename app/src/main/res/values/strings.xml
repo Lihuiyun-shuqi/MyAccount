@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MyAccount</string>
+    <string name="TEL">手机号:</string>
+    <string name="regisNametextview">昵称:</string>
+    <string name="password">密码:</string>
+    <string name="regisPsdtextView2">确认密码:</string>
+    <string name="Imgcode1">请输入验证码:</string>
+    <string name="Imgcode2">点击图片切换，不区分大小写</string>
+    <string name="Register">注册</string>
+    <string name="Reset">重置</string>
+    <string name="Login">登录</string>
+    <string name="Submit">提交</string>
+    <string name="toLogin"><![CDATA[>>>已有账号，直接登录]]></string>
+    <string name="toRegister"><![CDATA[>>>没有账号，去注册]]></string>
+    <string name="cnOldName1">现昵称:</string>
+    <string name="cnNewName">新昵称:</string>
+    <string name="cpNewPsdtextView1">新密码:</string>
+    <string name="cpNewPsdtextView2">确认新密码:</string>
+    <string name="edDatatextView">时间范围</string>
+    <string name="edDestextView">记账数据。。。</string>
+    <string name="reigsCodeDes">密码长度在6到10位之间，由数字和字母组成，区分大小写</string>
+</resources>
