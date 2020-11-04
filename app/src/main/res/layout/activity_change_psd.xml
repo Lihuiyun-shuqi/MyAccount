@@ -34,6 +34,14 @@
             android:inputType="textPassword" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/cpCodeDes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reigsCodeDes"
+        android:gravity="right"
+        android:textSize="12sp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
@@ -73,7 +81,8 @@
             android:layout_weight="1"
             android:text="@string/Submit"
             android:layout_marginLeft="40dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp"
+            android:onClick="cp_btn_op"/>
 
         <Button
             android:id="@+id/cpReset"
@@ -82,6 +91,17 @@
             android:layout_weight="1"
             android:text="@string/Reset"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="40dp"/>
+            android:layout_marginRight="40dp"
+            android:onClick="cp_btn_op"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/cpBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Back"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:onClick="cp_btn_op"/>
+
 </LinearLayout>

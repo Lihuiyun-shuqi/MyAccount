@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +17,9 @@ import android.widget.Toast;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 //注册页面
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class Register extends AppCompatActivity implements Runnable{
     private static final String TAG = "Register";
     EditText regisTel,regisName,regisPsd1,regisPsd2,regisImgcode;
     Button regisRegister,regisReset;
@@ -30,14 +28,17 @@ public class MainActivity extends AppCompatActivity implements Runnable{
     ImgCode RegisimgCode;
     Bitmap bitmap;
     Handler handler;
-    Toast toast;
     Intent config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register);
 
+        initView();
+    }
+
+    public void initView(){
         regisTel = (EditText)findViewById(R.id.regisTeleditTextPhone);
         regisName = (EditText)findViewById(R.id.regisNameeditText);
         regisPsd1 = (EditText)findViewById(R.id.regisPsdeditTextTextPassword1);
@@ -69,15 +70,12 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     public void handleMessage(Message msg){
                         if(msg.what == 1){
                             String sstr = (String)msg.obj;
-                            Log.i(TAG,sstr);
+                            //Log.i("Register-handler",sstr);
+                            Toast.makeText(Register.this,sstr,Toast.LENGTH_SHORT).show();
                         }
                         super.handleMessage(msg);
                     }
                 };
-                //转到登录页面
-                config = new Intent(this,Login.class);
-                startActivity(config);
-
                 break;
             case R.id.regisResetbutton:
                 regisTel.setText("");
@@ -97,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
     @Override
     public void run() {
+        String info = "noInfo";
         String tel = regisTel.getText().toString();
         String name = regisName.getText().toString();
         String psd1 = regisPsd1.getText().toString();
@@ -109,19 +108,16 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         String regex = "^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-z0-9A-Z]+$";
         //判断手机号是否合法，表示以1开头，第二位可能是3/4/5/6/7/8/9等的任意一个，在加上后面的\d表示数字[0-9]的9位，总共加起来11位结束
         String detail = "^1(3|4|5|6|7|8|9)\\d{9}$";
-        if (tel.length() != 0 && name.length() != 0 && psd1.length() != 0 && psd2.length() != 0 && imgCode.length() != 0) {
+        if (tel != null && name != null && psd1 != null && psd2 != null && imgCode != null
+                && !tel.equals("") && !name.equals("") && !psd1.equals("") && !psd2.equals("") && !imgCode.equals("")) {
             if (psd1.equals(psd2)) {
                 if (psd1.length() > 10 || psd1.length() < 6) {
-                    toast = Toast.makeText(this, "密码长度不符合要求！", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER,0,0);
-                    toast.show();
+                    info = "密码长度不符合要求!";
                 } else {
                     if (imgCode.equalsIgnoreCase(correctImg)) {
                         if (psd1.matches(regex)) {
                             if (tel.length() != 11) {
-                                toast = Toast.makeText(this, "手机号码位数不符合要求！", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER,0,0);
-                                toast.show();
+                                info = "手机号码位数不符合要求!";
                             } else {
                                 if (tel.matches(detail)) {
                                     try {
@@ -147,59 +143,45 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                                                 ps3.setString(3, name);
                                                 ps3.setString(4, psd1);
                                                 ps3.executeUpdate();
-                                                toast = Toast.makeText(this, "成功注册，请登录！", Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.CENTER,0,0);
-                                                toast.show();
-                                                Log.i("Register-run","注册成功");
                                                 ps3.close();
+                                                rs2.close();
+                                                ps2.close();
+                                                rs1.close();
+                                                ps1.close();
+
+                                                info = "成功注册，请登录!";
+                                                Log.i("Register-run","注册成功");
+                                                //转到登录页面
+                                                config = new Intent(this,Login.class);
+                                                startActivity(config);
                                             } catch (Exception e) {
-                                                toast = Toast.makeText(this, "注册失败！", Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.CENTER,0,0);
-                                                toast.show();
+                                                info = "注册失败!";
                                             }
                                         } else {
-                                            toast = Toast.makeText(this, "该手机号已被注册！", Toast.LENGTH_LONG);
-                                            toast.setGravity(Gravity.CENTER,0,0);
-                                            toast.show();
+                                            info = "该手机号已被注册!";
                                         }
-                                        ps1.close();
-                                        rs1.close();
-                                        ps2.close();
-                                        rs2.close();
-
                                     } catch (Exception e) {
                                     }
-
                                 } else {
-                                    toast = Toast.makeText(this, "手机号码不合法！", Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.CENTER,0,0);
-                                    toast.show();
+                                    info = "手机号码不合法!";
                                 }
-
                             }
                         } else {
-                            toast = Toast.makeText(this, "密码格式不符合要求！", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER,0,0);
-                            toast.show();
+                            info = "密码格式不符合要求!";
                         }
                     } else {
-                        toast = Toast.makeText(this, "验证码不正确！", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER,0,0);
-                        toast.show();
+                        info = "验证码不正确!";
                     }
                 }
             } else {
-                toast = Toast.makeText(this, "两次输入的密码不相同！", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER,0,0);
-                toast.show();
+                info = "两次输入的密码不相同!";
             }
         } else {
-            toast = Toast.makeText(this, "您的信息未完整填写！", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER,0,0);
-            toast.show();
+            info = "您的信息未完整填写!";
         }
-        Message msg = handler.obtainMessage(1);
-        msg.obj = "注册完毕";
-        handler.sendMessage(msg);
+        Message msg = new Message();
+        msg.obj = info;
+        msg.what = 1;
+        handler.sendMessageAtFrontOfQueue(msg);
     }
 }

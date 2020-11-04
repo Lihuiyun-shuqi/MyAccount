@@ -5,62 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ChangeName"
-    android:padding="20dp">
+    tools:context=".AddAccount"
+    android:padding="40dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="40dp">
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/cnOldName1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
-            android:text="@string/cnOldName1"
+            android:text="@string/addType"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginLeft="22dp"
-            android:layout_marginRight="50dp"/>
+            android:gravity="left"/>
+
+        <Spinner
+            android:id = "@+id/spinner_type"
+            android:layout_width = "wrap_content"
+            android:layout_height ="wrap_content" >
+        </Spinner >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/cnOldName2"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="@string/addTime"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:gravity="left"
-            android:layout_marginRight="50dp"/>
+            android:layout_gravity="center_vertical"/>
 
+        <DatePicker
+            android:id="@+id/add_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/cnNewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/cnNewName"
-            android:gravity="center"
+            android:text="@string/addMoney"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:gravity="left"/>
 
         <EditText
-            android:id="@+id/cnNameeditText"
+            android:id="@+id/addMoneyEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/addRemark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="left"/>
+
+        <EditText
+            android:id="@+id/addRemarkEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"/>
     </LinearLayout>
 
     <LinearLayout
@@ -71,33 +107,32 @@
         android:layout_marginTop="50dp">
 
         <Button
-            android:id="@+id/cnSubmit"
+            android:id="@+id/addSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/Submit"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="15dp"
-            android:onClick="cn_btn_op"/>
+            android:onClick="add_btn_op"/>
 
         <Button
-            android:id="@+id/cnReset"
+            android:id="@+id/addReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/Reset"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="40dp"
-            android:onClick="cn_btn_op"/>
+            android:onClick="add_btn_op"/>
     </LinearLayout>
 
     <Button
-        android:id="@+id/cnBack"
+        android:id="@+id/addBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Back"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:onClick="cn_btn_op"/>
-
+        android:onClick="add_btn_op"/>
 </LinearLayout>

@@ -9,18 +9,30 @@
     android:padding="20dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/fbTextDes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="@string/fbTextDes"
         android:layout_marginTop="40dp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="50dp"
+        android:textColor="#8B7500"/>
 
-    <TextView
-        android:id="@+id/textView2"
+    <EditText
+        android:id="@+id/fbEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:enabled="true"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:minLines="8"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        android:background="#FFF8DC"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +48,8 @@
             android:layout_weight="1"
             android:text="@string/Submit"
             android:layout_marginLeft="40dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp"
+            android:onClick="fb_btn_op"/>
 
         <Button
             android:id="@+id/fbReset"
@@ -45,6 +58,17 @@
             android:layout_weight="1"
             android:text="@string/Reset"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="40dp"/>
+            android:layout_marginRight="40dp"
+            android:onClick="fb_btn_op"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/fbBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Back"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:onClick="fb_btn_op"/>
+
 </LinearLayout>

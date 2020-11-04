@@ -9,8 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.Gravity;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,15 +30,17 @@ public class Login extends AppCompatActivity implements Runnable{
     ImgCode LogimgCode;
     Bitmap bitmap;
     Handler handler;
-    Toast toast;
     Intent config;
-    String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initView();
+    }
+
+    public void initView(){
         logTel = (EditText)findViewById(R.id.logTeleditTextPhone);
         logPsd = (EditText)findViewById(R.id.logPsdeditTextTextPassword);
         logImgcode = (EditText)findViewById(R.id.logImgcodeeditText);
@@ -63,22 +64,17 @@ public class Login extends AppCompatActivity implements Runnable{
             case R.id.logLoginbutton:
                 Thread t = new Thread(this);
                 t.start();
-
                 handler = new Handler(){
                     @Override
                     public void handleMessage(Message msg){
                         if(msg.what == 2){
-                            uid = (String)msg.obj;
-                            Log.i(TAG,"用户ID: " + uid);
+                            String sstr = (String)msg.obj;
+                            //Log.i("Login-handler",sstr);
+                            Toast.makeText(Login.this,sstr,Toast.LENGTH_SHORT).show();
                         }
                         super.handleMessage(msg);
                     }
                 };
-                //转到记账本首页
-                config = new Intent(this,FrameActivity.class);
-                config.putExtra("userId",uid);
-                startActivity(config);
-
                 break;
             case R.id.logResetbutton:
                 logTel.setText("");
@@ -86,7 +82,7 @@ public class Login extends AppCompatActivity implements Runnable{
                 logImgcode.setText("");
                 break;
             case R.id.toRegister:
-                config = new Intent(this,MainActivity.class);
+                config = new Intent(this, Register.class);
                 startActivity(config);
                 break;
             default:
@@ -96,11 +92,12 @@ public class Login extends AppCompatActivity implements Runnable{
 
     @Override
     public void run() {
-        Message msg = handler.obtainMessage(2);
+        String info = "noInfo";
         String tel = logTel.getText().toString();
         String psd = logPsd.getText().toString();
         String imgCode = logImgcode.getText().toString();
-        String id;
+        int id;//用户ID
+        String name;//用户昵称
         boolean flag = false;
         int i = 0;
         String correctImg = LogimgCode.getCode();//获取正确验证码
@@ -117,34 +114,47 @@ public class Login extends AppCompatActivity implements Runnable{
                     }
                     if (flag == true) {
                         rs.absolute(i);//直接定位到上一条信息
-                        if (psd.equals(rs.getString("psd"))) {
-                            id = rs.getString("no");
-                            msg.obj = id;
+                        if (psd.equals(rs.getString("password"))) {
+                            id = rs.getInt("uid");
+                            name = rs.getString("uname");
+                            info = "登录成功!";
                             ps.close();
                             rs.close();
+                            //使用SharedPreferences对象保存用户ID，用户昵称
+                            SharedPreferences sp1 = getSharedPreferences("userInfo", Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor1 = sp1.edit();
+                            editor1.putInt("user_id",id);
+                            editor1.putString("user_name",name);
+                            editor1.apply();
+                            //将返回的token数据用SharedPreferences将token持久化
+                            String andID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);//获取android设备ID
+                            SharedPreferences sp2 = getSharedPreferences("token",Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor2 = sp2.edit();
+                            String token = andID;
+                            editor2.putString("token",token);
+                            editor2.apply();
+                            //转到记账本首页
+                            config = new Intent(this,HomePage.class);
+                            startActivity(config);
                         } else {
-                            toast = Toast.makeText(this, "您的密码输入有误！", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER,0,0);
-                            toast.show();
+                            info = "您的密码输入有误!";
                         }
                     } else {
-                        toast = Toast.makeText(this, "您的手机号码输入有误！", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER,0,0);
-                        toast.show();
+                        info = "您的手机号码输入有误!";
                     }
                 } catch (Exception e) {
                 }
             } else {
-                toast = Toast.makeText(this, "验证码不正确！", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER,0,0);
-                toast.show();
+                info = "验证码不正确!";
             }
         } else {
-            toast = Toast.makeText(this, "手机号码不能为空！", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER,0,0);
-            toast.show();
+            info = "手机号码不能为空!";
         }
-        handler.sendMessage(msg);
+        Message msg = new Message();
+        msg.obj = info;
+        msg.what = 2;
+        handler.sendMessageAtFrontOfQueue(msg);
+        //Log.i("test", String.valueOf(msg.obj));
     }
 
 }
