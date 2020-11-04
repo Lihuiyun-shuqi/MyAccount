@@ -78,7 +78,7 @@ public class AddAccount extends AppCompatActivity implements Runnable{
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                typeName = spinner.getSelectedItem().toString();
+                typeName = spinner.getSelectedItem().toString();//获得选择项的名称
                 arg0.setVisibility(View.VISIBLE);
             }
             public void onNothingSelected(AdapterView<?> arg0) {
